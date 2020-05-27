@@ -3,7 +3,9 @@
 @section('content')
   <header class="flex items-end mb-3">
     <div class="flex justify-between items-end w-full">
-      <h2 class="text-grey text-sm font-normal">My Projects</h2>
+      <p class="text-grey text-sm font-normal">
+        <a href="/projects" class="text-grey text-sm font-normal no-underline">My Projects</a> / {{ $project->title }}
+      </p>
 
       <a href="/projects/create" class="button">New Project</a>
     </div>
