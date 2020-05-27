@@ -18,6 +18,11 @@ class CreateProjectsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->timestamps();
+            
+            $table->unsignedBigInteger('owner_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
