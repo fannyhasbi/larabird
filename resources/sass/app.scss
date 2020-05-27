@@ -1,5 +1,13 @@
-// Variables
-@import 'variables';
+@tailwind preflight;
+
+body {
+  margin: 0;
+}
+
+.button {
+  @apply .bg-blue .text-white .no-underline .rounded-lg .text-sm .py-2 .px-5;
+  box-shadow: 0 2px 7px 0 #b0eaff;
+}
 
 @tailwind base;
 
