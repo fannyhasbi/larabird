@@ -33,7 +33,8 @@ class ProjectsController extends Controller
         return view('projects.create');
     }
 
-    public function edit(Project $project) {
+    public function edit(Project $project)
+    {
         return view('projects.edit', compact('project'));
     }
 
@@ -46,7 +47,8 @@ class ProjectsController extends Controller
         return redirect($project->path());
     }
 
-    protected function validateRequest() {
+    protected function validateRequest()
+    {
         return request()->validate([
             'title' => 'sometimes|required',
             'description' => 'sometimes|required',
