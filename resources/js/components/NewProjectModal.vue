@@ -12,17 +12,22 @@
               type="text"
               id="title"
               class="border py-1 px-2 text-xs block w-full rounded"
-              :class="errors.title ? 'border-error' : 'border-muted-light'"
+              :class="form.errors.title ? 'border-error' : 'border-muted-light'"
               v-model="form.title">
-            <span class="text-xs italic text-error" v-if="errors.title" v-text="errors.title[0]"></span>
+            <span class="text-xs italic text-error" v-if="form.errors.title" v-text="form.errors.title[0]"></span>
           </div>
 
           <div class="mb-4">
             <label for="description" class="text-sm block mb-2">Description</label>
             
-            <textarea id="description" class="border border-muted-light py-1 px-2 text-xs block w-full rounded" rows="7" v-model="form.description"></textarea>
+            <textarea
+              id="description"
+              class="border border-muted-light py-1 px-2 text-xs block w-full rounded"
+              :class="form.errors.description ? 'border-error' : 'border-muted-light'"
+              rows="7"
+              v-model="form.description"></textarea>
 
-            <span class="text-xs italic text-error" v-if="errors.description" v-text="errors.description[0]"></span>
+            <span class="text-xs italic text-error" v-if="form.errors.description" v-text="form.errors.description[0]"></span>
           </div>
         </div>
 
@@ -59,16 +64,18 @@
 </template>
 
 <script>
+import BirdboardForm from './BirdboardForm';
+
 export default {
   data() {
     return {
-      form: {
+      form: new BirdboardForm({
         title: '',
         description: '',
         tasks: [
           { body: '' }
         ]
-      },
+      }),
       errors: {}
     }
   },
@@ -79,12 +86,13 @@ export default {
     },
 
     async submit() {
-      try {
-        let response = await axios.post('/projects', this.form);
-        location = response.data.message;
-      } catch (error) {
-        this.errors = error.response.data.errors;
-      }
+      this.form.submit('/projects');
+      // try {
+      //   let response = await axios.post('/projects', this.form);
+      //   location = response.data.message;
+      // } catch (error) {
+      //   this.errors = error.response.data.errors;
+      // }
     }
   }
 }
