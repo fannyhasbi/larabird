@@ -9,6 +9,7 @@ body {
 
 @import 'components/button';
 @import 'components/card';
+@import 'components/dropdown';
 
 body, button {
   @apply .text-default;
