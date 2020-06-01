@@ -75,24 +75,22 @@ export default {
         tasks: [
           { body: '' }
         ]
-      }),
-      errors: {}
+      })
     }
   },
 
   methods: {
     addTask() {
-      this.form.tasks.push({ value: '' });
+      this.form.tasks.push({ body: '' });
     },
 
     async submit() {
-      this.form.submit('/projects');
-      // try {
-      //   let response = await axios.post('/projects', this.form);
-      //   location = response.data.message;
-      // } catch (error) {
-      //   this.errors = error.response.data.errors;
-      // }
+      if (! this.form.tasks[0].body) {
+        delete this.form.originalData.tasks;
+      }
+
+      this.form.submit('/projects')
+        .then(response => location = response.data.message);
     }
   }
 }

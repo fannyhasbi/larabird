@@ -2004,14 +2004,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         tasks: [{
           body: ''
         }]
-      }),
-      errors: {}
+      })
     };
   },
   methods: {
     addTask: function addTask() {
       this.form.tasks.push({
-        value: ''
+        body: ''
       });
     },
     submit: function submit() {
@@ -2022,15 +2021,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.form.submit('/projects'); // try {
-                //   let response = await axios.post('/projects', this.form);
-                //   location = response.data.message;
-                // } catch (error) {
-                //   this.errors = error.response.data.errors;
-                // }
+                if (!_this.form.tasks[0].body) {
+                  delete _this.form.originalData.tasks;
+                }
 
+                _this.form.submit('/projects').then(function (response) {
+                  return location = response.data.message;
+                });
 
-              case 1:
+              case 2:
               case "end":
                 return _context.stop();
             }
@@ -50941,28 +50940,58 @@ var BirdboardForm = /*#__PURE__*/function () {
     this.originalData = JSON.parse(JSON.stringify(data));
     Object.assign(this, data);
     this.errors = {};
+    this.submitted = false;
   }
 
   _createClass(BirdboardForm, [{
     key: "data",
     value: function data() {
-      var data = {};
+      var _this = this;
 
-      for (var attribute in this.originalData) {
-        data[attribute] = this[attribute];
-      }
-
-      return data;
+      return Object.keys(this.originalData).reduce(function (data, attribute) {
+        data[attribute] = _this[attribute];
+        return data;
+      }, {});
+    }
+  }, {
+    key: "post",
+    value: function post(endpoint) {
+      this.submit(endpoint, 'post');
+    }
+  }, {
+    key: "patch",
+    value: function patch(endpoint) {
+      this.submit(endpoint, 'patch');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(endpoint) {
+      this.submit(endpoint, 'delete');
     }
   }, {
     key: "submit",
     value: function submit(endpoint) {
-      return axios.post(endpoint, this.data())["catch"](this.onFail.bind(this));
+      var requestType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'post';
+      return axios[requestType](endpoint, this.data()).then(this.onSuccess.bind(this))["catch"](this.onFail.bind(this));
+    }
+  }, {
+    key: "onSuccess",
+    value: function onSuccess(response) {
+      this.submitted = true;
+      this.errors = {};
+      return response;
     }
   }, {
     key: "onFail",
     value: function onFail(error) {
       this.errors = error.response.data.errors;
+      this.submitted = false;
+      throw error;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      Object.assign(this, this.originalData);
     }
   }]);
 
