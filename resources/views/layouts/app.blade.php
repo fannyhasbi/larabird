@@ -53,23 +53,30 @@
                             @else
                                 <theme-switcher></theme-switcher>
 
-                                <a
-                                    href="#" role="button"
-                                    class="flex items-center text-default no-underline text-sm"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    v-pre
-                                >
-                                    <img
-                                        src="{{ gravatar_url(auth()->user()->email) }}"
-                                        class="rounded-full mr-3"
-                                        width="35">
-                                    JeffreyWay
+                                <dropdown align="right" width="200px">
+                                    <template v-slot:trigger>
+                                        <button
+                                            href="#"
+                                            class="flex items-center text-default no-underline text-sm focus:outline-none"
+                                        >
+                                            <img
+                                                src="{{ gravatar_url(auth()->user()->email) }}"
+                                                class="rounded-full mr-3"
+                                                width="35">
+                                            {{ auth()->user()->name }}
+        
+                                        </button>
+                                    </template>
 
-                                </a>
+                                    <form action="/logout" id="logout-form" method="POST">
+                                        @csrf
+
+                                        <button type="submit" class="dropdown-menu-link w-full text-left">Logout</button>
+                                    </form>
+                                </dropdown>
+
                             @endguest
-                        </ul>
+                            </div>
                     </div>
                 </div>
             </div>
